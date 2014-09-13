@@ -1,23 +1,20 @@
 package wuhack2014.digipaper;
 
-import java.io.File;
-
 /**
  * Created by xenon on 13.09.14.
  */
 public class Document {
-    private File file;
+    private String filename;
 
-    public Document(File file) {
-        this.file = file;
+    public Document(String filename) {
+        this.setFilename(filename);
     }
 
-    @Override
-    public String toString() {
-        return file.getName();
+    public String getFilename() {
+        return filename;
     }
 
-    public File getFile() {
-        return file;
+    public void setFilename(String filename) {
+        this.filename = filename;
     }
 }

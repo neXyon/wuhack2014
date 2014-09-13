@@ -33,7 +33,7 @@ public class FolderList extends Activity {
         documents = new File(documents, "DigiPaper");
 
         if(!documents.exists())
-            documents.mkdir();
+            documents.mkdirs();
 
         File subjects[] = documents.listFiles();
 

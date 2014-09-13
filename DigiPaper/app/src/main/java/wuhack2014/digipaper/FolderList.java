@@ -1,6 +1,7 @@
 package wuhack2014.digipaper;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -54,7 +55,9 @@ public class FolderList extends Activity {
             public void onItemClick(AdapterView<?> parent, final View view,
                                     int position, long id) {
                 final Folder folder = (Folder) parent.getItemAtPosition(position);
-
+                Intent intent = new Intent(parent.getContext(), DocumentList.class);
+                intent.putExtra("folder", folder.getPath().getAbsolutePath());
+                startActivity(intent);
             }
 
         });

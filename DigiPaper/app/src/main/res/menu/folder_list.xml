@@ -5,4 +5,7 @@
         android:title="@string/action_settings"
         android:orderInCategory="100"
         android:showAsAction="never" />
+    <item android:id="@+id/add_subject"
+        android:title="Add Subject"
+        android:showAsAction="never" />
 </menu>

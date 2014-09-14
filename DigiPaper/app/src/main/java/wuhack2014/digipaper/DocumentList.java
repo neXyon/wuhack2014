@@ -49,9 +49,12 @@ public class DocumentList extends Activity {
                 final Document document = (Document) parent.getItemAtPosition(position);
 
                 if (document.isImage()) {
-                    Intent intent = new Intent(parent.getContext(), ImageViewer.class);
+                    OCRRunner runner = new OCRRunner(document.getFile(), folder);
+                    runner.ocr();
+
+                    /*Intent intent = new Intent(parent.getContext(), ImageViewer.class);
                     intent.putExtra("imageFile", document.getFile().toString());
-                    startActivity(intent);
+                    startActivity(intent);*/
                 } else if (document.isWeb()) {
                     Intent intent = new Intent(parent.getContext(), WebViewer.class);
                     intent.putExtra("webFile", document.getFile().toString());

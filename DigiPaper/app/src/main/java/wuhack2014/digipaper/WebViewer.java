@@ -58,12 +58,13 @@ public class WebViewer extends Activity{
 
         }
 
-        text.append("<script src='http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'></script>");
-        text.append("<script>function getAnswer(n){Android.answer(n)}$(\".ocrx_word\").on(\"click\",function(){getAnswer($(this).html())});</script>");
+        String toAppend = "<head><script src='http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'></script>" +
+                "<script>function getAnswer(n){Android.answer(n);}$(window).load(function() {$(\".ocrx_word\").click(function(){getAnswer($(this).html());});});</script>";
+        int index = text.indexOf("<head>");
+        text = text.replace(index, index + 6, toAppend);
 
         wv.loadData(text.toString(), "text/html", "UTF-8");
         wv.addJavascriptInterface(new AnswersInterface(this), "Android");
-
      }
 
 }

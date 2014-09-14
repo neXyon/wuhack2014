@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.text.Html;
+import android.webkit.JavascriptInterface;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,15 +27,15 @@ public class AnswersInterface {
         mContext = c;
     }
 
-
+    @JavascriptInterface
     public void answer(String keyword) {
         BufferedReader reader = null;
 
         try {
             URL url = new URL("http://gravity.answers.com/question/search?keyword=" + keyword);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setReadTimeout(10000 /* milliseconds */);
-            conn.setConnectTimeout(15000 /* milliseconds */);
+            conn.setReadTimeout(40000 /* milliseconds */);
+            conn.setConnectTimeout(45000 /* milliseconds */);
             conn.setRequestMethod("GET");
             conn.setDoInput(true);
             conn.connect();

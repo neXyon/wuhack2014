@@ -61,7 +61,6 @@ public class DocumentList extends Activity {
                     intent.putExtra("webFile", document.getFile().toString());
                     startActivity(intent);
                 }
-
             }
 
         });

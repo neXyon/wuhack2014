@@ -27,6 +27,7 @@ public class DocumentList extends Activity {
     private String value;
     private Uri fileUri;
     private String f;
+    private Document selectedDocument;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,12 +53,9 @@ public class DocumentList extends Activity {
                 final Document document = (Document) parent.getItemAtPosition(position);
 
                 if (document.isImage()) {
-                    OCRRunner runner = new OCRRunner(document.getFile(), folder);
-                    runner.ocr();
-
-                    /*Intent intent = new Intent(parent.getContext(), ImageViewer.class);
+                    Intent intent = new Intent(parent.getContext(), ImageViewer.class);
                     intent.putExtra("imageFile", document.getFile().toString());
-                    startActivity(intent);*/
+                    startActivity(intent);
                 } else if (document.isWeb()) {
                     Intent intent = new Intent(parent.getContext(), WebViewer.class);
                     intent.putExtra("webFile", document.getFile().toString());
@@ -208,6 +206,8 @@ public class DocumentList extends Activity {
                 fileUri = Uri.fromFile(file); // create a file to save the image
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri); // set the image file name
 
+                selectedDocument = new Document(file);
+
                 // start the image capture Intent
                 startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
             }
@@ -227,6 +227,8 @@ public class DocumentList extends Activity {
             if (resultCode == Activity.RESULT_OK) {
                 // Image captured and saved to fileUri specified in the Intent
                 Toast.makeText(this, "Image saved!", Toast.LENGTH_LONG).show();
+                OCRRunner runner = new OCRRunner(selectedDocument.getFile(), folder);
+                runner.ocr();
                 refresh();
             } else if (resultCode == RESULT_CANCELED) {
                 Toast.makeText(this, "Picture Cancelled", Toast.LENGTH_LONG).show();

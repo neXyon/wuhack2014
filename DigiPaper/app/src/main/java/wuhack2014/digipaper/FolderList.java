@@ -32,8 +32,8 @@ public class FolderList extends Activity {
 
         setContentView(R.layout.activity_folder_list);
 
-        documents = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
-        documents = new File(documents, "DigiPaper");
+        documents = Environment.getExternalStorageDirectory();//Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
+        documents = new File(documents, "documents/DigiPaper");
 
         if(!documents.exists())
             documents.mkdirs();
@@ -136,7 +136,7 @@ public class FolderList extends Activity {
                 String value = input.getText().toString();
 
                 // create Intent to take a picture and return control to the calling application
-                File directory = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) + File.separator + "DigiPaper" + File.separator + value);
+                File directory = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "documents" + File.separator + "DigiPaper" + File.separator + value);
                 directory.mkdir();
                 Toast.makeText(getApplicationContext(), "Subject \"" + value + "\" created", Toast.LENGTH_LONG).show();
                 refresh();

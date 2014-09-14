@@ -51,6 +51,16 @@ public class DocumentList extends Activity {
                                     int position, long id) {
                 final Document document = (Document) parent.getItemAtPosition(position);
 
+                if (document.isImage()) {
+                    Intent intent = new Intent(parent.getContext(), ImageViewer.class);
+                    intent.putExtra("imageFile", document.getFile().toString());
+                    startActivity(intent);
+                } else if (document.isWeb()) {
+                    Intent intent = new Intent(parent.getContext(), WebViewer.class);
+                    intent.putExtra("webFile", document.getFile().toString());
+                    startActivity(intent);
+                }
+
             }
 
         });
@@ -71,6 +81,16 @@ public class DocumentList extends Activity {
             public void onItemClick(AdapterView<?> parent, final View view,
                                     int position, long id) {
                 final Document document = (Document) parent.getItemAtPosition(position);
+
+                if (document.isImage()) {
+                    Intent intent = new Intent(parent.getContext(), ImageViewer.class);
+                    intent.putExtra("imageFile", document.getFile().toString());
+                    startActivity(intent);
+                } else if (document.isWeb()) {
+                    Intent intent = new Intent(parent.getContext(), WebViewer.class);
+                    intent.putExtra("webFile", document.getFile().toString());
+                    startActivity(intent);
+                }
 
             }
 

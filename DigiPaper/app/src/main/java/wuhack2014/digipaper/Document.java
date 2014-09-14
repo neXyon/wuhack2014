@@ -41,6 +41,13 @@ public class Document {
         return false;
     }
 
+    public boolean isLink() {
+        if (file.getName().startsWith("http")) {
+            return true;
+        }
+        return false;
+    }
+
     public String getExtension() {
         String split[] = toString().split("[.]");
         return split.length > 1 ? split[split.length-1].toLowerCase() : "";

@@ -21,10 +21,12 @@ import android.util.Log;
 public class OCRRunner {
     private File file;
     private Folder folder;
+    private DocumentList list;
 
-    public OCRRunner(File file, Folder folder) {
+    public OCRRunner(File file, Folder folder, DocumentList list) {
         this.file = file;
         this.folder = folder;
+        this.list = list;
     }
 
     void ocr() {
@@ -114,6 +116,7 @@ public class OCRRunner {
                     outputStream.close();
 
                     folder.getDocuments().add(new Document(new File(outpath)));
+                    list.refresh();
                 } catch(Exception e) {
                     // handle this! ;)
                     Log.e("BLA", e.getMessage());

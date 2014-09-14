@@ -64,6 +64,34 @@ public class FolderList extends Activity {
             }
 
         });
+
+        list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                final Folder folder = (Folder) parent.getItemAtPosition(position);
+                final AlertDialog.Builder alert = new AlertDialog.Builder(view.getContext());
+
+                alert.setTitle("Delete Subject");
+                alert.setMessage("Are you sure you want to delete " + folder.toString() + "? This will delete all of its contents!");
+
+                alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        folder.getPath().delete();
+                        Toast.makeText(alert.getContext(), folder.toString() + " was deleted", Toast.LENGTH_LONG).show();
+                        refresh();
+                    }
+                });
+
+                alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                    }
+                });
+
+                alert.show();
+                return true;
+            }
+        });
     }
 
     private void refresh() {
@@ -94,6 +122,34 @@ public class FolderList extends Activity {
                 startActivity(intent);
             }
 
+        });
+
+        list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                final Folder folder = (Folder) parent.getItemAtPosition(position);
+                final AlertDialog.Builder alert = new AlertDialog.Builder(view.getContext());
+
+                alert.setTitle("Delete Subject");
+                alert.setMessage("Are you sure you want to delete " + folder.toString() + "? This will delete all of its contents!");
+
+                alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        folder.getPath().delete();
+                        Toast.makeText(alert.getContext(), folder.toString() + " was deleted", Toast.LENGTH_LONG).show();
+                        refresh();
+                    }
+                });
+
+                alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                    }
+                });
+
+                alert.show();
+                return true;
+            }
         });
     }
 

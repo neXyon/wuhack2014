@@ -64,6 +64,34 @@ public class DocumentList extends Activity {
             }
 
         });
+
+        list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                final Document document = (Document) parent.getItemAtPosition(position);
+                final AlertDialog.Builder alert = new AlertDialog.Builder(view.getContext());
+
+                alert.setTitle("Delete File");
+                alert.setMessage("Are you sure you want to delete " + document.toString() + "?");
+
+                alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        document.getFile().delete();
+                        Toast.makeText(alert.getContext(), document.toString() + " was deleted", Toast.LENGTH_LONG).show();
+                        refresh();
+                    }
+                });
+
+                alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                    }
+                });
+
+                alert.show();
+                return true;
+            }
+        });
     }
 
     private void refresh() {
@@ -94,6 +122,34 @@ public class DocumentList extends Activity {
 
             }
 
+        });
+
+        list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                final Document document = (Document) parent.getItemAtPosition(position);
+                final AlertDialog.Builder alert = new AlertDialog.Builder(view.getContext());
+
+                alert.setTitle("Delete File");
+                alert.setMessage("Are you sure you want to delete " + document.toString() + "?");
+
+                alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        document.getFile().delete();
+                        Toast.makeText(alert.getContext(), document.toString() + " was deleted", Toast.LENGTH_LONG).show();
+                        refresh();
+                    }
+                });
+
+                alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                    }
+                });
+
+                alert.show();
+                return true;
+            }
         });
     }
 
@@ -150,7 +206,6 @@ public class DocumentList extends Activity {
 
         alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                Toast.makeText(getApplicationContext(), "Cancelled", Toast.LENGTH_LONG).show();
             }
         });
 

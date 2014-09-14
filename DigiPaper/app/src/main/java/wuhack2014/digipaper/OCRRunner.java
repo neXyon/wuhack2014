@@ -117,7 +117,11 @@ public class OCRRunner {
                     outputStream.close();
 
                     folder.getDocuments().add(new Document(new File(outpath)));
-                    list.refresh();
+                    list.runOnUiThread(new Runnable() {
+                        public void run() {
+                            list.refresh();
+                        }
+                    });
                     Toast.makeText(list.getApplicationContext(), "OCR successful.", Toast.LENGTH_LONG).show();
                 } catch(Exception e) {
                     // handle this! ;)

@@ -78,7 +78,7 @@ public class FolderList extends Activity {
                 alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         folder.getPath().delete();
-
+                        folders.remove(folder);
                         Toast.makeText(alert.getContext(), folder.toString() + " was deleted", Toast.LENGTH_LONG).show();
                         refresh();
                     }
@@ -141,6 +141,7 @@ public class FolderList extends Activity {
                 // create Intent to take a picture and return control to the calling application
                 File directory = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "documents" + File.separator + "DigiPaper" + File.separator + value);
                 directory.mkdir();
+                folders.add(new Folder(directory));
                 Toast.makeText(getApplicationContext(), "Subject \"" + value + "\" created", Toast.LENGTH_LONG).show();
                 refresh();
             }

@@ -53,12 +53,9 @@ public class DocumentList extends Activity {
                 final Document document = (Document) parent.getItemAtPosition(position);
 
                 if (document.isImage()) {
-                    OCRRunner runner = new OCRRunner(document.getFile(), folder);
-                    runner.ocr();
-
-                    /*Intent intent = new Intent(parent.getContext(), ImageViewer.class);
+                    Intent intent = new Intent(parent.getContext(), ImageViewer.class);
                     intent.putExtra("imageFile", document.getFile().toString());
-                    startActivity(intent);*/
+                    startActivity(intent);
                 } else if (document.isWeb()) {
                     Intent intent = new Intent(parent.getContext(), WebViewer.class);
                     intent.putExtra("webFile", document.getFile().toString());
@@ -81,10 +78,13 @@ public class DocumentList extends Activity {
 
                 alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        document.getFile().delete();
-                        Toast.makeText(alert.getContext(), document.toString() + " was deleted", Toast.LENGTH_LONG).show();
-                        folder.getDocuments().remove(document);
-                        refresh();
+                        if (document.getFile().delete()) {
+                            folder.getDocuments().remove(document);
+                            Toast.makeText(alert.getContext(), document.toString() + " was deleted", Toast.LENGTH_LONG).show();
+                            refresh();
+                        } else {
+                            Toast.makeText(alert.getContext(), "Failed to delete " + document.toString() + ", it may be in use", Toast.LENGTH_LONG).show();
+                        }
                     }
                 });
 
@@ -152,7 +152,6 @@ public class DocumentList extends Activity {
                 Log.d("file", file.getPath());
                 fileUri = Uri.fromFile(file); // create a file to save the image
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri); // set the image file name
-
                 // start the image capture Intent
                 startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
             }
@@ -173,6 +172,8 @@ public class DocumentList extends Activity {
                 // Image captured and saved to fileUri specified in the Intent
                 Toast.makeText(this, "Image saved!", Toast.LENGTH_LONG).show();
                 folder.getDocuments().add(new Document(cameraImageFile));
+                OCRRunner runner = new OCRRunner(cameraImageFile, folder);
+                runner.ocr();
                 refresh();
             } else if (resultCode == RESULT_CANCELED) {
                 Toast.makeText(this, "Picture Cancelled", Toast.LENGTH_LONG).show();

@@ -73,11 +73,12 @@ public class FolderList extends Activity {
                 final AlertDialog.Builder alert = new AlertDialog.Builder(view.getContext());
 
                 alert.setTitle("Delete Subject");
-                alert.setMessage("Are you sure you want to delete " + folder.toString() + "? This will delete all of its contents!");
+                alert.setMessage("Are you sure you want to delete " + folder.toString() + "?");
 
                 alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         folder.getPath().delete();
+
                         Toast.makeText(alert.getContext(), folder.toString() + " was deleted", Toast.LENGTH_LONG).show();
                         refresh();
                     }
@@ -132,7 +133,7 @@ public class FolderList extends Activity {
                 final AlertDialog.Builder alert = new AlertDialog.Builder(view.getContext());
 
                 alert.setTitle("Delete Subject");
-                alert.setMessage("Are you sure you want to delete " + folder.toString() + "? This will delete all of its contents!");
+                alert.setMessage("Are you sure you want to delete " + folder.toString() + "?");
 
                 alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {

@@ -97,7 +97,7 @@ public class OCRRunner {
                     String outpath = file.getAbsolutePath();
                     int ind = outpath.lastIndexOf('.');
                     if(ind != -1) {
-                        outpath.substring(0, ind);
+                        outpath = outpath.substring(0, ind);
                     }
                     outpath += ".html";
 

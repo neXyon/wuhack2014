@@ -27,6 +27,7 @@ public class DocumentList extends Activity {
     private String value;
     private Uri fileUri;
     private String f;
+    private File cameraImageFile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +83,7 @@ public class DocumentList extends Activity {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         document.getFile().delete();
                         Toast.makeText(alert.getContext(), document.toString() + " was deleted", Toast.LENGTH_LONG).show();
+                        folder.getDocuments().remove(document);
                         refresh();
                     }
                 });
@@ -98,62 +100,10 @@ public class DocumentList extends Activity {
     }
 
     private void refresh() {
-        folder = new Folder(new File(f));
-        setContentView(R.layout.activity_document_list);
-
         ListView list = (ListView)findViewById(R.id.documentView);
 
         ArrayAdapter<Document> adapter = new ArrayAdapter<Document>(this, android.R.layout.simple_list_item_1, folder.getDocuments());
         list.setAdapter(adapter);
-
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, final View view,
-                                    int position, long id) {
-                final Document document = (Document) parent.getItemAtPosition(position);
-
-                if (document.isImage()) {
-                    Intent intent = new Intent(parent.getContext(), ImageViewer.class);
-                    intent.putExtra("imageFile", document.getFile().toString());
-                    startActivity(intent);
-                } else if (document.isWeb()) {
-                    Intent intent = new Intent(parent.getContext(), WebViewer.class);
-                    intent.putExtra("webFile", document.getFile().toString());
-                    startActivity(intent);
-                }
-
-            }
-
-        });
-
-        list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                final Document document = (Document) parent.getItemAtPosition(position);
-                final AlertDialog.Builder alert = new AlertDialog.Builder(view.getContext());
-
-                alert.setTitle("Delete File");
-                alert.setMessage("Are you sure you want to delete " + document.toString() + "?");
-
-                alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        document.getFile().delete();
-                        Toast.makeText(alert.getContext(), document.toString() + " was deleted", Toast.LENGTH_LONG).show();
-                        refresh();
-                    }
-                });
-
-                alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                    }
-                });
-
-                alert.show();
-                return true;
-            }
-        });
     }
 
     @Override
@@ -198,6 +148,7 @@ public class DocumentList extends Activity {
 
                 File file = new File(folder.getPath() + File.separator);
                 file = new File(file, value);
+                cameraImageFile = file;
                 Log.d("file", file.getPath());
                 fileUri = Uri.fromFile(file); // create a file to save the image
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri); // set the image file name
@@ -221,6 +172,7 @@ public class DocumentList extends Activity {
             if (resultCode == Activity.RESULT_OK) {
                 // Image captured and saved to fileUri specified in the Intent
                 Toast.makeText(this, "Image saved!", Toast.LENGTH_LONG).show();
+                folder.getDocuments().add(new Document(cameraImageFile));
                 refresh();
             } else if (resultCode == RESULT_CANCELED) {
                 Toast.makeText(this, "Picture Cancelled", Toast.LENGTH_LONG).show();

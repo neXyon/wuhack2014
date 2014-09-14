@@ -12,15 +12,57 @@ import android.view.KeyEvent;
 import android.webkit.WebView;
 import android.widget.Toast;
 
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 public class WebViewer extends Activity{
 
     private File webFile;
+
+    public String answer(String keyword) {
+        BufferedReader reader = null;
+
+        try {
+            URL url = new URL("http://gravity.answers.com/question/search?keyword=" + keyword);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setReadTimeout(10000 /* milliseconds */);
+            conn.setConnectTimeout(15000 /* milliseconds */);
+            conn.setRequestMethod("GET");
+            conn.setDoInput(true);
+            conn.connect();
+            int response = conn.getResponseCode();
+            reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+
+            StringBuilder sb = new StringBuilder();
+
+            String line = null;
+            while ((line = reader.readLine()) != null)
+            {
+                sb.append(line + "\n");
+            }
+
+            JSONObject object = new JSONObject(sb.toString());
+
+            return object.getJSONArray("results").getJSONObject(0).getString("answer");
+        } catch(Exception e) {
+            // handle this! ;)
+        } finally {
+            if (reader != null) {
+                reader.close();
+            }
+        }
+
+        return null;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

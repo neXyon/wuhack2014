@@ -99,11 +99,11 @@ public class DocumentList extends Activity {
         });
     }
 
-    private void refresh() {
+    public void refresh() {
         ListView list = (ListView)findViewById(R.id.documentView);
-
-        ArrayAdapter<Document> adapter = new ArrayAdapter<Document>(this, android.R.layout.simple_list_item_1, folder.getDocuments());
-        list.setAdapter(adapter);
+        if(list != null) {
+            ((ArrayAdapter<Document>) list.getAdapter()).notifyDataSetChanged();
+        }
     }
 
     @Override
@@ -172,7 +172,7 @@ public class DocumentList extends Activity {
                 // Image captured and saved to fileUri specified in the Intent
                 Toast.makeText(this, "Image saved!", Toast.LENGTH_LONG).show();
                 folder.getDocuments().add(new Document(cameraImageFile));
-                OCRRunner runner = new OCRRunner(cameraImageFile, folder);
+                OCRRunner runner = new OCRRunner(cameraImageFile, folder, this);
                 runner.ocr();
                 refresh();
             } else if (resultCode == RESULT_CANCELED) {

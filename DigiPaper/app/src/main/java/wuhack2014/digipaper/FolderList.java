@@ -96,62 +96,8 @@ public class FolderList extends Activity {
     }
 
     private void refresh() {
-        setContentView(R.layout.activity_folder_list);
-
-        File subjects[] = documents.listFiles();
-        folders = new ArrayList<Folder>();
-
-        for(File subject : subjects) {
-            if(subject.isDirectory()) {
-                Folder folder = new Folder(subject);
-                folders.add(folder);
-            }
-        }
-
         ListView list = (ListView)findViewById(R.id.folderView);
-
-        ArrayAdapter<Folder> adapter = new ArrayAdapter<Folder>(this, android.R.layout.simple_list_item_1, folders);
-        list.setAdapter(adapter);
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, final View view,
-                                    int position, long id) {
-                final Folder folder = (Folder) parent.getItemAtPosition(position);
-                Intent intent = new Intent(parent.getContext(), DocumentList.class);
-                intent.putExtra("folder", folder.getPath().getAbsolutePath());
-                startActivity(intent);
-            }
-
-        });
-
-        list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                final Folder folder = (Folder) parent.getItemAtPosition(position);
-                final AlertDialog.Builder alert = new AlertDialog.Builder(view.getContext());
-
-                alert.setTitle("Delete Subject");
-                alert.setMessage("Are you sure you want to delete " + folder.toString() + "?");
-
-                alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        folder.getPath().delete();
-                        Toast.makeText(alert.getContext(), folder.toString() + " was deleted", Toast.LENGTH_LONG).show();
-                        refresh();
-                    }
-                });
-
-                alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                    }
-                });
-
-                alert.show();
-                return true;
-            }
-        });
+        ((ArrayAdapter<Folder>)list.getAdapter()).notifyDataSetChanged();
     }
 
 

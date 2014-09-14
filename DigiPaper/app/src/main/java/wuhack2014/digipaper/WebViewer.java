@@ -61,10 +61,16 @@ public class WebViewer extends Activity{
         String toAppend = "<head><script src='http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'></script>" +
                 "<script>function getAnswer(n){Android.answer(n);}$(window).load(function() {$(\".ocrx_word\").click(function(){getAnswer($(this).html());});});</script>";
         int index = text.indexOf("<head>");
-        text = text.replace(index, index + 6, toAppend);
+        if (index != -1) {
+            text = text.replace(index, index + 6, toAppend);
+        } else {
+            text.insert(0, toAppend);
+        }
 
         wv.loadData(text.toString(), "text/html", "UTF-8");
         wv.addJavascriptInterface(new AnswersInterface(this), "Android");
+
+
      }
 
 }

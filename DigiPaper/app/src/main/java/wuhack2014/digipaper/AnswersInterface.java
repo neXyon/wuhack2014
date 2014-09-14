@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.text.Html;
+import android.util.Log;
 import android.webkit.JavascriptInterface;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,6 +30,8 @@ public class AnswersInterface {
 
     @JavascriptInterface
     public void answer(String keyword) {
+        keyword = Html.fromHtml(keyword).toString();
+
         BufferedReader reader = null;
 
         try {
@@ -40,6 +43,7 @@ public class AnswersInterface {
             conn.setDoInput(true);
             conn.connect();
             int response = conn.getResponseCode();
+
             reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 
             StringBuilder sb = new StringBuilder();
@@ -52,7 +56,12 @@ public class AnswersInterface {
 
             JSONObject object = new JSONObject(sb.toString());
 
-            String answer = object.getJSONArray("results").getJSONObject(0).getString("answer");
+            if (!object.isNull("error")) {
+                Toast.makeText(mContext, "Could not find an answer for " + keyword + "!", Toast.LENGTH_LONG).show();
+                return;
+            }
+
+            String answer = object.getJSONArray("results").getJSONObject(0).getString("answer") + "<br><br>from answers.com";
             TextView msg = new TextView(mContext);
             msg.setText(Html.fromHtml(answer));
             msg.setPadding(15, 15, 15, 15);

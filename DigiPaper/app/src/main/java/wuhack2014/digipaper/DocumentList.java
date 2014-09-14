@@ -145,7 +145,6 @@ public class DocumentList extends Activity {
 
                 // start the image capture Intent
                 startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
-                refresh();
             }
         });
 
@@ -164,6 +163,7 @@ public class DocumentList extends Activity {
             if (resultCode == Activity.RESULT_OK) {
                 // Image captured and saved to fileUri specified in the Intent
                 Toast.makeText(this, "Image saved!", Toast.LENGTH_LONG).show();
+                refresh();
             } else if (resultCode == RESULT_CANCELED) {
                 Toast.makeText(this, "Picture Cancelled", Toast.LENGTH_LONG).show();
             } else {

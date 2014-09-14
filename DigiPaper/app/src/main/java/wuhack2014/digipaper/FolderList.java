@@ -29,8 +29,8 @@ public class FolderList extends Activity {
 
         setContentView(R.layout.activity_folder_list);
 
-        File documents = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
-        documents = new File(documents, "DigiPaper");
+        File documents = Environment.getExternalStorageDirectory(); //Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
+        documents = new File(documents, "documents/DigiPaper");
 
         if(!documents.exists())
             documents.mkdirs();

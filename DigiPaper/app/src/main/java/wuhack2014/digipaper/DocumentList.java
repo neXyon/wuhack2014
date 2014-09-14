@@ -2,11 +2,15 @@ package wuhack2014.digipaper;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 
 import java.io.File;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,6 +48,15 @@ public class DocumentList extends Activity {
                                     int position, long id) {
                 final Document document = (Document) parent.getItemAtPosition(position);
 
+                if (document.isImage()) {
+                    Intent intent = new Intent(parent.getContext(), ImageViewer.class);
+                    intent.putExtra("imageFile", document.getFile().toString());
+                    startActivity(intent);
+                } else if (document.isWeb()) {
+                    Intent intent = new Intent(parent.getContext(), WebViewer.class);
+                    intent.putExtra("webFile", document.getFile().toString());
+                    startActivity(intent);
+                }
             }
 
         });

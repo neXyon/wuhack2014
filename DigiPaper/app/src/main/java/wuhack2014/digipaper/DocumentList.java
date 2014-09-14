@@ -77,9 +77,12 @@ public class DocumentList extends Activity {
 
                 alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        document.getFile().delete();
-                        Toast.makeText(alert.getContext(), document.toString() + " was deleted", Toast.LENGTH_LONG).show();
-                        refresh();
+                        if (document.getFile().delete()) {
+                            Toast.makeText(alert.getContext(), document.toString() + " was deleted", Toast.LENGTH_LONG).show();
+                            refresh();
+                        } else {
+                            Toast.makeText(alert.getContext(), "Failed to delete " + document.toString() + ", it may be in use", Toast.LENGTH_LONG).show();
+                        }
                     }
                 });
 
@@ -136,9 +139,12 @@ public class DocumentList extends Activity {
 
                 alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        document.getFile().delete();
-                        Toast.makeText(alert.getContext(), document.toString() + " was deleted", Toast.LENGTH_LONG).show();
-                        refresh();
+                        if (document.getFile().delete()) {
+                            Toast.makeText(alert.getContext(), document.toString() + " was deleted", Toast.LENGTH_LONG).show();
+                            refresh();
+                        } else {
+                            Toast.makeText(alert.getContext(), "Failed to delete " + document.toString() + ", it may be in use", Toast.LENGTH_LONG).show();
+                        }
                     }
                 });
 

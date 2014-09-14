@@ -14,6 +14,7 @@ import java.net.URL;
 
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 /**
  * Created by xenon on 13.09.14.
@@ -117,6 +118,7 @@ public class OCRRunner {
 
                     folder.getDocuments().add(new Document(new File(outpath)));
                     list.refresh();
+                    Toast.makeText(list.getApplicationContext(), "OCR successful.", Toast.LENGTH_LONG).show();
                 } catch(Exception e) {
                     // handle this! ;)
                     Log.e("BLA", e.getMessage());

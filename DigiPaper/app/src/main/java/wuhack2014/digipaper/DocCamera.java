@@ -18,7 +18,7 @@ import java.io.File;
 
 
 public class DocCamera extends Activity {
-    private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 102;
+    private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
     private String value;
     private Uri fileUri;
 
@@ -43,10 +43,8 @@ public class DocCamera extends Activity {
                 // create Intent to take a picture and return control to the calling application
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
-                File file = new File(Environment.getExternalStorageDirectory().getPath());
-                if (!file.exists()) {
-                    file.mkdir();
-                }
+                File file = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
+                file = new File(file, value);
                 Log.d("file" ,file.getPath());
                 fileUri = Uri.fromFile(file); // create a file to save the image
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri); // set the image file name
@@ -70,8 +68,7 @@ public class DocCamera extends Activity {
         if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {
                 // Image captured and saved to fileUri specified in the Intent
-                Toast.makeText(this, "Image saved to:\n" +
-                        data.getData(), Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Image saved!", Toast.LENGTH_LONG).show();
             } else if (resultCode == RESULT_CANCELED) {
                 Toast.makeText(this, "Picture Cancelled", Toast.LENGTH_LONG).show();
             } else {

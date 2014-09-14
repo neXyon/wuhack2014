@@ -28,42 +28,6 @@ public class WebViewer extends Activity{
 
     private File webFile;
 
-    public String answer(String keyword) {
-        BufferedReader reader = null;
-
-        try {
-            URL url = new URL("http://gravity.answers.com/question/search?keyword=" + keyword);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setReadTimeout(10000 /* milliseconds */);
-            conn.setConnectTimeout(15000 /* milliseconds */);
-            conn.setRequestMethod("GET");
-            conn.setDoInput(true);
-            conn.connect();
-            int response = conn.getResponseCode();
-            reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-
-            StringBuilder sb = new StringBuilder();
-
-            String line = null;
-            while ((line = reader.readLine()) != null)
-            {
-                sb.append(line + "\n");
-            }
-
-            JSONObject object = new JSONObject(sb.toString());
-
-            return object.getJSONArray("results").getJSONObject(0).getString("answer");
-        } catch(Exception e) {
-            // handle this! ;)
-        } finally {
-            if (reader != null) {
-                reader.close();
-            }
-        }
-
-        return null;
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,14 +42,14 @@ public class WebViewer extends Activity{
         WebView wv = (WebView) findViewById(R.id.webView);
         wv.getSettings().setJavaScriptEnabled(true);
 
-        String text = "";
+        StringBuilder text = new StringBuilder();
 
         try {
             BufferedReader br = new BufferedReader(new FileReader(webFile));
             String line;
 
             while ((line = br.readLine()) != null) {
-                text += line;
+                text.append(line);
             }
             br.close();
         } catch (FileNotFoundException e){
@@ -94,13 +58,12 @@ public class WebViewer extends Activity{
 
         }
 
-        text += "<script src='http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'></script>";
+        text.append("<script src='http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'></script>");
+        text.append("<script>function getAnswer(n){Android.answer(n)}$(\".ocrx_word\").on(\"click\",function(){getAnswer($(this).html())});</script>");
 
-        Log.i("text:", text);
+        wv.loadData(text.toString(), "text/html", "UTF-8");
+        wv.addJavascriptInterface(new AnswersInterface(this), "Android");
 
-        wv.loadData(text, "text/html", "UTF-8");
-
-        String script = "$(document).ready(function(){$(\"body\").prepend(\"<div style='width: 100%'><input type='text' id='query' style='width: 100%' placeholder='Ask a question by typing or tapping words'></div>\"),$(\".ocrx_word\").css(\"cursor\",\"pointer\"),$(\".ocrx_word\").on(\"click\",function(){len=$(\"#query\").val().length,len>1&&\" \"!=$(\"#query\").val().substr(len-1,len)&&$(\"#query\").val($(\"#query\").val()+\" \"),$(\"#query\").val($(\"#query\").val()+$(this).html()+\" \")})});";
      }
 
 }

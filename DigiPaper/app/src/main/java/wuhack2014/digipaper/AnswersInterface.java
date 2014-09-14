@@ -61,7 +61,7 @@ public class AnswersInterface {
                 return;
             }
 
-            String answer = object.getJSONArray("results").getJSONObject(0).getString("answer");
+            String answer = object.getJSONArray("results").getJSONObject(0).getString("answer") + "<br><br>from answers.com";
             TextView msg = new TextView(mContext);
             msg.setText(Html.fromHtml(answer));
             msg.setPadding(15, 15, 15, 15);
